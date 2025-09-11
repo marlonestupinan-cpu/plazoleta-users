@@ -1,17 +1,14 @@
-package com.pragma.users.domain.model;
+package com.pragma.users.application.dto.request;
 
-import lombok.AllArgsConstructor;
+import com.pragma.users.domain.model.Role;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class UserRequestDto {
     private Long id;
     private String name;
     private String lastName;
