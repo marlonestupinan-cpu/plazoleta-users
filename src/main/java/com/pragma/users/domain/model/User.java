@@ -1,6 +1,8 @@
 package com.pragma.users.domain.model;
 
 import com.pragma.users.infrastructure.exception.IllegalUserAgeException;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,6 +12,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
+@Data
 @Getter
 @Setter
 public class User {
@@ -18,8 +21,10 @@ public class User {
     private String lastName;
     private String identityDocument;
     private String email;
+    @EqualsAndHashCode.Exclude
     private Date birthDate;
     private String phoneNumber;
+    @EqualsAndHashCode.Exclude
     private String password;
     private Role role;
 

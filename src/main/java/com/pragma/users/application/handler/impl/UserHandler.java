@@ -11,13 +11,11 @@ import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
 import com.pragma.users.infrastructure.configuration.RoleProperties;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional

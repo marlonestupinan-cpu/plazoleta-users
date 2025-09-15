@@ -1,9 +1,7 @@
 package com.pragma.users.infrastructure.out.jpa.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.apache.commons.lang3.builder.EqualsExclude;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,8 +10,8 @@ import java.util.Date;
 @Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Data
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +25,12 @@ public class UserEntity {
     @Column(name = "correo")
     private String email;
     @Column(name = "fecha_nacimiento")
+    @EqualsAndHashCode.Exclude
     private Date birthDate;
     @Column(name = "celular")
     private String phoneNumber;
     @Column(name = "clave")
+    @EqualsAndHashCode.Exclude
     private String password;
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
