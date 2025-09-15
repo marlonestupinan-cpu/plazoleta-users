@@ -1,7 +1,6 @@
 package com.pragma.users.infrastructure.out.jpa.entity;
 
 import lombok.*;
-import org.apache.commons.lang3.builder.EqualsExclude;
 
 import javax.persistence.*;
 import java.util.Date;

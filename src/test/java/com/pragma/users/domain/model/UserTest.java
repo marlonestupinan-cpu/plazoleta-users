@@ -30,9 +30,7 @@ class UserTest {
 
         User user = new User();
 
-        assertThrows(IllegalUserAgeException.class, () -> {
-            user.setBirthDate(birthDate);
-        });
+        assertThrows(IllegalUserAgeException.class, () -> user.setBirthDate(birthDate));
     }
 
     @Test

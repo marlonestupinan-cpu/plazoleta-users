@@ -6,7 +6,6 @@ import com.pragma.users.infrastructure.exception.UserAlreadyExistException;
 import com.pragma.users.infrastructure.exception.UserNotFoundException;
 import com.pragma.users.infrastructure.out.jpa.adapter.UserJpaAdapter;
 import com.pragma.users.infrastructure.out.jpa.entity.UserEntity;
-import com.pragma.users.infrastructure.out.jpa.mapper.IRoleEntityMapper;
 import com.pragma.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.users.infrastructure.out.jpa.repository.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +30,6 @@ class UserJpaAdapterTest {
 
     private IUserRepository userRepository;
     @Autowired
-    private IRoleEntityMapper roleEntityMapper;
-    @Autowired
     private IUserEntityMapper userEntityMapper;
     private UserJpaAdapter userJpaAdapter;
 
@@ -44,8 +41,6 @@ class UserJpaAdapterTest {
         user = createUserMock();
         userEntity = createUserRequestMock();
         userRepository = mock(IUserRepository.class);
-//        roleEntityMapper = new IRoleEntityMapperImpl();
-//        userEntityMapper = Mappers.getMapper(IUserEntityMapper.class);
 
         userJpaAdapter = new UserJpaAdapter(userRepository, userEntityMapper);
     }
@@ -53,7 +48,6 @@ class UserJpaAdapterTest {
     @Test
     void testSaveUserWhenUserDoesNotExistThenSaveSuccessfully() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
-//        when(userEntityMapper.toEntity(user)).thenReturn(userEntity);
 
         userJpaAdapter.saveUser(user);
 
@@ -70,10 +64,8 @@ class UserJpaAdapterTest {
     @Test
     void testGetAllUsersWhenUsersExistThenReturnUserList() {
         List<UserEntity> entities = Arrays.asList(userEntity);
-        List<User> users = Arrays.asList(user);
 
         when(userRepository.findAll()).thenReturn(entities);
-//        when(userEntityMapper.toUserList(entities)).thenReturn(users);
 
         List<User> result = userJpaAdapter.getAllUsers();
 
@@ -91,7 +83,6 @@ class UserJpaAdapterTest {
     @Test
     void testGetUserWhenUserExistsThenReturnUser() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(userEntity));
-//        when(userEntityMapper.toUser(userEntity)).thenReturn(user);
 
         User result = userJpaAdapter.getUser(1L);
 
@@ -123,31 +114,31 @@ class UserJpaAdapterTest {
     }
 
     User createUserMock() {
-        User user = new User();
-        user.setId(1L);
-        user.setName("Juan");
-        user.setLastName("Perez");
-        user.setEmail("a@a.com");
-        user.setPhoneNumber("+573105412541");
-        user.setBirthDate(Date.from(Instant.now().minusSeconds(630720000))); // -20 years
-        user.setIdentityDocument("1234");
-        user.setPassword("1234");
+        User userMock = new User();
+        userMock.setId(1L);
+        userMock.setName("Juan");
+        userMock.setLastName("Perez");
+        userMock.setEmail("a@a.com");
+        userMock.setPhoneNumber("+573105412541");
+        userMock.setBirthDate(Date.from(Instant.now().minusSeconds(630720000))); // -20 years
+        userMock.setIdentityDocument("1234");
+        userMock.setPassword("1234");
 
-        return user;
+        return userMock;
     }
 
     UserEntity createUserRequestMock() {
-        UserEntity user = new UserEntity();
-        user.setId(1L);
-        user.setName("Juan");
-        user.setLastName("Perez");
-        user.setEmail("a@a.com");
-        user.setPhoneNumber("+573105412541");
-        user.setBirthDate(Date.from(Instant.now().minusSeconds(630720000))); // -20 years
-        user.setIdentityDocument("1234");
-        user.setPassword(BCrypt.hashpw("1234", BCrypt.gensalt()));
+        UserEntity userRequestMock = new UserEntity();
+        userRequestMock.setId(1L);
+        userRequestMock.setName("Juan");
+        userRequestMock.setLastName("Perez");
+        userRequestMock.setEmail("a@a.com");
+        userRequestMock.setPhoneNumber("+573105412541");
+        userRequestMock.setBirthDate(Date.from(Instant.now().minusSeconds(630720000))); // -20 years
+        userRequestMock.setIdentityDocument("1234");
+        userRequestMock.setPassword(BCrypt.hashpw("1234", BCrypt.gensalt()));
 
-        return user;
+        return userRequestMock;
     }
 }
 
