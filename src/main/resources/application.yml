@@ -9,7 +9,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
 appDescription: "Usuarios Plazoleta"
 appVersion: "1.0.0"
+
+
+roles.map:
+  admin: "administrador"
+  owner: "propietario"

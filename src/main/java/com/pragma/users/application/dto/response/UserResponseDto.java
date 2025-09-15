@@ -1,6 +1,5 @@
 package com.pragma.users.application.dto.response;
 
-import com.pragma.users.domain.model.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +15,4 @@ public class UserResponseDto {
     private String email;
     private Date birthDate;
     private String phoneNumber;
-    private Role role;
 }

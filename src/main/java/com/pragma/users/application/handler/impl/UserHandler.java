@@ -5,15 +5,19 @@ import com.pragma.users.application.dto.response.UserResponseDto;
 import com.pragma.users.application.handler.IUserHandler;
 import com.pragma.users.application.mapper.IUserRequestMapper;
 import com.pragma.users.application.mapper.IUserResponseMapper;
+import com.pragma.users.domain.api.IRoleServicePort;
 import com.pragma.users.domain.api.IUserServicePort;
 import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
+import com.pragma.users.infrastructure.configuration.RoleProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,6 +26,8 @@ public class UserHandler implements IUserHandler {
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
 
+    private final IRoleServicePort roleServicePort;
+    private final RoleProperties roleProperties;
 
     @Override
     public void saveUser(UserRequestDto user) {
@@ -52,7 +58,8 @@ public class UserHandler implements IUserHandler {
     @Override
     public void createOwner(UserRequestDto user) {
         User newOwner = userRequestMapper.toUser(user);
-        newOwner.setRole(Role.OWNER);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
+        newOwner.setRole(role);
         userServicePort.saveUser(newOwner);
     }
 }
