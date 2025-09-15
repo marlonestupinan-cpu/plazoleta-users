@@ -13,6 +13,4 @@ import org.mapstruct.ReportingPolicy;
 public interface IUserRequestMapper {
     UserRequestDto toDto(User user);
     User toUser(UserRequestDto userRequest);
-    @Mapping(source = "userRequest.role.name", target = "name")
-    Role toRole(UserRequestDto userRequest);
 }

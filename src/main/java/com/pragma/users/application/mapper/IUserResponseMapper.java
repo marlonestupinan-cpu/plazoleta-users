@@ -9,8 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = ReportingPolicy.IGNORE,
-        uses = {IRoleResponseMapper.class})
+        unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IUserResponseMapper {
     UserResponseDto toResponse(User user);
     List<UserResponseDto> toResponseList(List<User> users);

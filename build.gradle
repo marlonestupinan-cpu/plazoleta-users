@@ -45,6 +45,7 @@ dependencies {
 
 	implementation "org.springdoc:springdoc-openapi-ui:${openApiVersion}"
 	implementation "org.springdoc:springdoc-openapi-webflux-ui:${openApiVersion}"
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
 tasks.named('test') {

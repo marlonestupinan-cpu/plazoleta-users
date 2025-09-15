@@ -1,14 +1,20 @@
-package com.pragma.users.application.dto.response;
+package com.pragma.users.infrastructure.out.jpa.entity;
 
 import com.pragma.users.domain.model.Role;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String lastName;
@@ -16,5 +22,6 @@ public class UserResponseDto {
     private String email;
     private Date birthDate;
     private String phoneNumber;
+    private String password;
     private Role role;
 }
