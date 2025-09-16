@@ -60,4 +60,11 @@ public class UserHandler implements IUserHandler {
         newOwner.setRole(role);
         userServicePort.saveUser(newOwner);
     }
+
+    @Override
+    public boolean isOwner(Long id) {
+        User user = userServicePort.getUser(id);
+        Role ownerRole = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
+        return user.getRole().getId().equals(ownerRole.getId());
+    }
 }
