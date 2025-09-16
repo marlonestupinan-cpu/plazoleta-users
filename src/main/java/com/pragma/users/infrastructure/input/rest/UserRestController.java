@@ -45,4 +45,9 @@ public class UserRestController {
         userHandler.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/owner/check/{id}")
+    public ResponseEntity<Boolean> isOwner(@PathVariable Long id) {
+        return ResponseEntity.ok(userHandler.isOwner(id));
+    }
 }

@@ -98,4 +98,28 @@ class UserRestControllerTest {
 
         verify(userHandler).deleteUser(id);
     }
+    @Test
+    void shouldReturnTrueWhenUserIsOwner() throws Exception {
+        Long userId = 1L;
+        when(userHandler.isOwner(userId)).thenReturn(true);
+
+        mockMvc.perform(get("/user/owner/check/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(true));
+
+        verify(userHandler).isOwner(userId);
+    }
+
+    @Test
+    void shouldReturnFalseWhenUserIsNotOwner() throws Exception {
+        Long userId = 1L;
+        when(userHandler.isOwner(userId)).thenReturn(false);
+
+        mockMvc.perform(get("/user/owner/check/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(false));
+
+        verify(userHandler).isOwner(userId);
+    }
+
 }

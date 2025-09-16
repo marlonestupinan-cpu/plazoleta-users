@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UserHandlerTest {
@@ -96,7 +96,7 @@ class UserHandlerTest {
     @Test
     void shouldUpdateUser() {
         UserRequestDto dto = generateUserRequestMock();
-        User expedtedUser = userRequestMapper.toUser(dto);
+        User expectedUser = userRequestMapper.toUser(dto);
 
         userHandler.updateUser(dto);
 
@@ -105,7 +105,7 @@ class UserHandlerTest {
 
         User realUser = userCaptor.getValue();
 
-        assertEquals(expedtedUser, realUser);
+        assertEquals(expectedUser, realUser);
     }
 
     @Test
@@ -120,23 +120,84 @@ class UserHandlerTest {
     @Test
     void shouldCreateOwner() {
         UserRequestDto dto = generateUserRequestMock();
-        User expedtedUser = userRequestMapper.toUser(dto);
+        User expectedUser = userRequestMapper.toUser(dto);
+        String ownerRoleName = "propietario";
         Role role = new Role();
-        role.setName("propietario");
-        expedtedUser.setRole(role);
+        role.setName(ownerRoleName);
+        expectedUser.setRole(role);
 
-        when(roleProperties.getRoleName("owner")).thenReturn("propietario");
-        when(roleServicePort.getRoleByName("propietario")).thenReturn(role);
+        when(roleProperties.getRoleName("owner")).thenReturn(ownerRoleName);
+        when(roleServicePort.getRoleByName(ownerRoleName)).thenReturn(role);
 
         userHandler.createOwner(dto);
 
-        assertEquals(role, expedtedUser.getRole());
+        assertEquals(role, expectedUser.getRole());
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userServicePort).saveUser(userCaptor.capture());
 
         User realUser = userCaptor.getValue();
-        assertEquals(expedtedUser, realUser);
+        assertEquals(expectedUser, realUser);
     }
+
+    @Test
+    void shouldReturnTrueWhenUserIsOwner() {
+        Long userId = 1L;
+        String ownerRoleName = "propietario";
+
+        Role ownerRole = new Role();
+        ownerRole.setId(1L);
+        ownerRole.setName(ownerRoleName);
+
+        User userWithOwnerRole = new User();
+        userWithOwnerRole.setId(userId);
+        userWithOwnerRole.setRole(ownerRole);
+
+        when(userServicePort.getUser(userId)).thenReturn(userWithOwnerRole);
+        when(roleProperties.getRoleName("owner")).thenReturn(ownerRoleName);
+        when(roleServicePort.getRoleByName(ownerRoleName)).thenReturn(ownerRole);
+
+        boolean isOwner = userHandler.isOwner(userId);
+
+        assertTrue(isOwner);
+
+        verify(userServicePort).getUser(userId);
+        verify(roleProperties).getRoleName("owner");
+        verify(roleServicePort).getRoleByName(ownerRoleName);
+    }
+
+    @Test
+    void shouldReturnFalseWhenUserIsNotOwner() {
+        Long userId = 1L;
+        Long ownerRoleId = 1L;
+        Long clientRoleId = 2L;
+        String ownerRoleName = "propietario";
+        String clientRoleName = "cliente";
+
+        Role ownerRole = new Role();
+        ownerRole.setId(ownerRoleId);
+        ownerRole.setName(ownerRoleName);
+
+        Role clientRole = new Role();
+        clientRole.setId(clientRoleId);
+        clientRole.setName(clientRoleName);
+
+        User userWithClientRole = new User();
+        userWithClientRole.setId(userId);
+        userWithClientRole.setRole(clientRole);
+
+        when(userServicePort.getUser(userId)).thenReturn(userWithClientRole);
+        when(roleProperties.getRoleName("owner")).thenReturn(ownerRoleName);
+        when(roleServicePort.getRoleByName(ownerRoleName)).thenReturn(ownerRole);
+
+        boolean isOwner = userHandler.isOwner(userId);
+
+        assertFalse(isOwner);
+
+        verify(userServicePort).getUser(userId);
+        verify(roleProperties).getRoleName("owner");
+        verify(roleServicePort).getRoleByName(ownerRoleName);
+    }
+
 
     UserRequestDto generateUserRequestMock() {
         UserRequestDto user = new UserRequestDto();

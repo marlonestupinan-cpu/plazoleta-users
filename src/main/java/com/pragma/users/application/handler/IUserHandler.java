@@ -17,4 +17,6 @@ public interface IUserHandler {
     void deleteUser(Long id);
 
     void createOwner(UserRequestDto user);
+
+    boolean isOwner(Long id);
 }
