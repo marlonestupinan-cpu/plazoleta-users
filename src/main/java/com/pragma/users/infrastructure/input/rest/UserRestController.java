@@ -7,6 +7,7 @@ import com.pragma.users.application.handler.IUserHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ public class UserRestController {
     private final IUserHandler userHandler;
 
     @PostMapping("/owner")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> createOwner(@RequestBody @Valid UserRequestDto user) {
         userHandler.createOwner(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -47,6 +49,7 @@ public class UserRestController {
     }
 
     @GetMapping("/owner/check/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Boolean> isOwner(@PathVariable Long id) {
         return ResponseEntity.ok(userHandler.isOwner(id));
     }
