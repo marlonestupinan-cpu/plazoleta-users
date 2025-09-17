@@ -1,6 +1,9 @@
 package com.pragma.users.infrastructure.out.jpa.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +12,6 @@ import java.util.Date;
 @Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Data
 public class UserEntity {
     @Id

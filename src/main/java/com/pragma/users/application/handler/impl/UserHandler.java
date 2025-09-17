@@ -11,6 +11,7 @@ import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
 import com.pragma.users.infrastructure.configuration.RoleProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,8 @@ public class UserHandler implements IUserHandler {
 
     private final IRoleServicePort roleServicePort;
     private final RoleProperties roleProperties;
+
+    private final PasswordEncoder encoder;
 
     @Override
     public void saveUser(UserRequestDto user) {
@@ -58,6 +61,7 @@ public class UserHandler implements IUserHandler {
         User newOwner = userRequestMapper.toUser(user);
         Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
         newOwner.setRole(role);
+        newOwner.setPassword(encoder.encode(user.getPassword()));
         userServicePort.saveUser(newOwner);
     }
 

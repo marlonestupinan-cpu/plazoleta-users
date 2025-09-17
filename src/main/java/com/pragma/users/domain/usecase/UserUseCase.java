@@ -1,18 +1,20 @@
 package com.pragma.users.domain.usecase;
 
+import com.pragma.users.domain.api.IRoleServicePort;
 import com.pragma.users.domain.api.IUserServicePort;
+import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
 import com.pragma.users.domain.spi.IUserPersistencePort;
+import com.pragma.users.infrastructure.configuration.RoleProperties;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserUseCase implements IUserServicePort {
-
     private final IUserPersistencePort userPersistencePort;
-
-    public UserUseCase(IUserPersistencePort userPersistencePort) {
-        this.userPersistencePort = userPersistencePort;
-    }
+    private final IRoleServicePort roleService;
+    private final RoleProperties roleProperties;
 
     @Override
     public void saveUser(User user) {
@@ -37,5 +39,16 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void deleteUser(Long id) {
         userPersistencePort.deleteUser(id);
+    }
+
+    @Override
+    public User getAdmin() {
+        Role role = roleService.getRoleByName(roleProperties.getRoleName("admin"));
+        return userPersistencePort.findOneUserByRole(role);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userPersistencePort.getUserByEmail(email);
     }
 }

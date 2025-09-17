@@ -1,6 +1,15 @@
 server:
   port: 8081
 
+
+application:
+  security:
+    jwt:
+      secret-key: 19b02086edcba74510ff59eaa84183b78ffdd8c8f3888de4aa831f9acddcbec9
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/usuarios_plazoleta
@@ -13,6 +22,10 @@ spring:
     show-sql: true
 appDescription: "Usuarios Plazoleta"
 appVersion: "1.0.0"
+
+admin:
+  email: admin@admin.com
+  password: root
 
 
 roles.map:

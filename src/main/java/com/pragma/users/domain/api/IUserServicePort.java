@@ -14,4 +14,8 @@ public interface IUserServicePort {
     void updateUser(User user);
 
     void deleteUser(Long id);
+
+    User getAdmin();
+
+    User getUserByEmail(String username);
 }
