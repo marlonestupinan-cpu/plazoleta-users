@@ -67,6 +67,7 @@ public class JwtGenerator implements ITokenGenerator {
     private String buildJwtToken(User user, long expiration) {
         return Jwts.builder()
                 .id(user.getId().toString())
+                .claim("id",  user.getId().toString())
                 .claim("roles", user.getRole().getName().toUpperCase())
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
