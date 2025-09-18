@@ -6,6 +6,7 @@ import com.pragma.users.infrastructure.exception.UserAlreadyExistException;
 import com.pragma.users.infrastructure.exception.UserNotFoundException;
 import com.pragma.users.infrastructure.out.jpa.adapter.UserJpaAdapter;
 import com.pragma.users.infrastructure.out.jpa.entity.UserEntity;
+import com.pragma.users.infrastructure.out.jpa.mapper.IRoleEntityMapper;
 import com.pragma.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.users.infrastructure.out.jpa.repository.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +32,13 @@ class UserJpaAdapterTest {
     private IUserRepository userRepository;
     @Autowired
     private IUserEntityMapper userEntityMapper;
+    @Autowired
+    private IRoleEntityMapper roleEntityMapper;
     private UserJpaAdapter userJpaAdapter;
 
     private User user;
     private UserEntity userEntity;
+
 
     @BeforeEach
     void setUp() {
@@ -42,7 +46,7 @@ class UserJpaAdapterTest {
         userEntity = createUserRequestMock();
         userRepository = mock(IUserRepository.class);
 
-        userJpaAdapter = new UserJpaAdapter(userRepository, userEntityMapper);
+        userJpaAdapter = new UserJpaAdapter(userRepository, userEntityMapper, roleEntityMapper);
     }
 
     @Test

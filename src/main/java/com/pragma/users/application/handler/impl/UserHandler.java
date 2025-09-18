@@ -71,4 +71,13 @@ public class UserHandler implements IUserHandler {
         Role ownerRole = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
         return user.getRole().getId().equals(ownerRole.getId());
     }
+
+    @Override
+    public void createEmployee(UserRequestDto user) {
+        User newOwner = userRequestMapper.toUser(user);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("employee"));
+        newOwner.setRole(role);
+        newOwner.setPassword(encoder.encode(user.getPassword()));
+        userServicePort.saveUser(newOwner);
+    }
 }

@@ -31,3 +31,4 @@ admin:
 roles.map:
   admin: "administrador"
   owner: "propietario"
+  employee: "empleado"
