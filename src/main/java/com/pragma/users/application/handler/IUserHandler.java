@@ -21,4 +21,6 @@ public interface IUserHandler {
     boolean isOwner(Long id);
 
     void createEmployee(UserRequestDto user);
+
+    void createClient(UserRequestDto user);
 }
