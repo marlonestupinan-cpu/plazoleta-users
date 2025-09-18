@@ -80,4 +80,13 @@ public class UserHandler implements IUserHandler {
         newOwner.setPassword(encoder.encode(user.getPassword()));
         userServicePort.saveUser(newOwner);
     }
+
+    @Override
+    public void createClient(UserRequestDto user) {
+        User newOwner = userRequestMapper.toUser(user);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("client"));
+        newOwner.setRole(role);
+        newOwner.setPassword(encoder.encode(user.getPassword()));
+        userServicePort.saveUser(newOwner);
+    }
 }
