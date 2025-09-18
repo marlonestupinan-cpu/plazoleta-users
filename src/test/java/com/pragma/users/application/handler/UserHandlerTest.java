@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -42,12 +43,15 @@ class UserHandlerTest {
         roleServicePort = mock(IRoleServicePort.class);
         roleProperties = mock(RoleProperties.class);
 
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+
         userHandler = new UserHandler(
                 userServicePort,
                 userRequestMapper,
                 userResponseMapper,
                 roleServicePort,
-                roleProperties
+                roleProperties,
+                passwordEncoder
         );
     }
 

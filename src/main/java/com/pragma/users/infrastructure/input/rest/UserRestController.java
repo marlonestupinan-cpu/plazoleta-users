@@ -53,4 +53,11 @@ public class UserRestController {
     public ResponseEntity<Boolean> isOwner(@PathVariable Long id) {
         return ResponseEntity.ok(userHandler.isOwner(id));
     }
+
+    @PostMapping("/employee")
+    @PreAuthorize("hasRole('PROPIETARIO')")
+    public ResponseEntity<Void> createEmployee(@RequestBody @Valid UserRequestDto user) {
+        userHandler.createEmployee(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
