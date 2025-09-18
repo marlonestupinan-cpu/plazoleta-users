@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -38,9 +37,5 @@ public class User {
             throw new IllegalUserAgeException();
         }
         this.birthDate = birthDate;
-    }
-
-    public void setPassword(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
