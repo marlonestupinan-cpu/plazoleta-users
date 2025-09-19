@@ -20,7 +20,7 @@ public interface IUserHandler {
 
     boolean isOwner(Long id);
 
-    void createEmployee(UserRequestDto user);
+    void createEmployee(UserRequestDto user, Long idOwner);
 
     void createClient(UserRequestDto user);
 }

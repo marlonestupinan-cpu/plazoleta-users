@@ -26,6 +26,7 @@ public class User {
     @EqualsAndHashCode.Exclude
     private String password;
     private Role role;
+    private User owner = null;
 
 
     public void setBirthDate(Date birthDate) {
@@ -37,5 +38,9 @@ public class User {
             throw new IllegalUserAgeException();
         }
         this.birthDate = birthDate;
+    }
+
+    public Long getOwnerId() {
+        return owner == null ? null : owner.getId();
     }
 }
