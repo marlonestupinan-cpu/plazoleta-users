@@ -34,17 +34,20 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR, EMPLEADO')")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userHandler.getUserById(id));
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> updateUser(@RequestBody UserRequestDto user) {
         userHandler.updateUser(user);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userHandler.deleteUser(id);
         return ResponseEntity.noContent().build();
