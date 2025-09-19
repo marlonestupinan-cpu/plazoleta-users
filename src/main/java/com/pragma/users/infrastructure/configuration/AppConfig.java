@@ -1,5 +1,6 @@
 package com.pragma.users.infrastructure.configuration;
 
+import com.pragma.users.infrastructure.configuration.security.CustomUserDetails;
 import com.pragma.users.domain.api.IUserServicePort;
 import com.pragma.users.domain.model.User;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +10,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,11 +26,12 @@ public class AppConfig {
     public UserDetailsService userDetailsService() {
         return username -> {
             final User user = userService.getUserByEmail(username);
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .roles(user.getRole().getName().toUpperCase())
-                    .build();
+            return new CustomUserDetails(
+                    user.getId(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName().toUpperCase()))
+            );
         };
     }
     @Bean

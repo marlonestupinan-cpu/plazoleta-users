@@ -36,4 +36,7 @@ public class UserEntity {
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
     private RoleEntity role;
+    @ManyToOne
+    @JoinColumn(name = "id_propietario")
+    private UserEntity owner;
 }
