@@ -1,4 +1,4 @@
-package com.pragma.users.infrastructure.exception;
+package com.pragma.users.domain.exception;
 
 public class IllegalUserAgeException extends RuntimeException {
     public IllegalUserAgeException() {

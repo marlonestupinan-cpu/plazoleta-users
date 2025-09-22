@@ -5,11 +5,11 @@ import com.pragma.users.application.dto.response.UserResponseDto;
 import com.pragma.users.application.handler.IUserHandler;
 import com.pragma.users.application.mapper.IUserRequestMapper;
 import com.pragma.users.application.mapper.IUserResponseMapper;
+import com.pragma.users.domain.api.IRolePropiertiesPort;
 import com.pragma.users.domain.api.IRoleServicePort;
 import com.pragma.users.domain.api.IUserServicePort;
 import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
-import com.pragma.users.infrastructure.configuration.RoleProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class UserHandler implements IUserHandler {
     private final IUserResponseMapper userResponseMapper;
 
     private final IRoleServicePort roleServicePort;
-    private final RoleProperties roleProperties;
+    private final IRolePropiertiesPort roleProperties;
 
     private final PasswordEncoder encoder;
 
@@ -59,16 +59,14 @@ public class UserHandler implements IUserHandler {
     @Override
     public void createOwner(UserRequestDto user) {
         User newOwner = userRequestMapper.toUser(user);
-        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
-        newOwner.setRole(role);
-        newOwner.setPassword(encoder.encode(user.getPassword()));
-        userServicePort.saveUser(newOwner);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName(Role.type.OWNER.getCode()));
+        userServicePort.saveUser(newOwner, role);
     }
 
     @Override
     public boolean isOwner(Long id) {
         User user = userServicePort.getUser(id);
-        Role ownerRole = roleServicePort.getRoleByName(roleProperties.getRoleName("owner"));
+        Role ownerRole = roleServicePort.getRoleByName(roleProperties.getRoleName(Role.type.OWNER.getCode()));
         return user.getRole().getId().equals(ownerRole.getId());
     }
 
@@ -76,19 +74,14 @@ public class UserHandler implements IUserHandler {
     public void createEmployee(UserRequestDto user, Long idOwner) {
         User newEmployee = userRequestMapper.toUser(user);
         User owner = userServicePort.getUser(idOwner);
-        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("employee"));
-        newEmployee.setRole(role);
-        newEmployee.setPassword(encoder.encode(user.getPassword()));
-        newEmployee.setOwner(owner);
-        userServicePort.saveUser(newEmployee);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName(Role.type.EMPLOYEE.getCode()));
+        userServicePort.saveUser(newEmployee, role, owner);
     }
 
     @Override
     public void createClient(UserRequestDto user) {
         User newOwner = userRequestMapper.toUser(user);
-        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName("client"));
-        newOwner.setRole(role);
-        newOwner.setPassword(encoder.encode(user.getPassword()));
-        userServicePort.saveUser(newOwner);
+        Role role = roleServicePort.getRoleByName(roleProperties.getRoleName(Role.type.CLIENT.getCode()));
+        userServicePort.saveUser(newOwner, role);
     }
 }

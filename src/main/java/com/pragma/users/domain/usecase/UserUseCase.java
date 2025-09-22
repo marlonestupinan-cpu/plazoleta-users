@@ -1,11 +1,12 @@
 package com.pragma.users.domain.usecase;
 
+import com.pragma.users.domain.api.IPasswordEncoderPort;
+import com.pragma.users.domain.api.IRolePropiertiesPort;
 import com.pragma.users.domain.api.IRoleServicePort;
 import com.pragma.users.domain.api.IUserServicePort;
 import com.pragma.users.domain.model.Role;
 import com.pragma.users.domain.model.User;
 import com.pragma.users.domain.spi.IUserPersistencePort;
-import com.pragma.users.infrastructure.configuration.RoleProperties;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -14,10 +15,24 @@ import java.util.List;
 public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IRoleServicePort roleService;
-    private final RoleProperties roleProperties;
+    private final IRolePropiertiesPort roleProperties;
+    private final IPasswordEncoderPort encoder;
 
     @Override
     public void saveUser(User user) {
+        saveUser(user, null, null);
+    }
+
+    @Override
+    public void saveUser(User user, Role role) {
+        user.setRole(role);
+        saveUser(user, role, null);
+    }
+
+    @Override
+    public void saveUser(User user, Role role, User owner) {
+        user.setOwner(owner);
+        user.setPassword(encoder.encode(user.getPassword()));
         userPersistencePort.saveUser(user);
     }
 
@@ -43,7 +58,7 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public User getAdmin() {
-        Role role = roleService.getRoleByName(roleProperties.getRoleName("admin"));
+        Role role = roleService.getRoleByName(roleProperties.getRoleName(Role.type.ADMIN.getCode()));
         return userPersistencePort.findOneUserByRole(role);
     }
 

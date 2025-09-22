@@ -1,6 +1,6 @@
 package com.pragma.users.infrastructure.exceptionhandler;
 
-import com.pragma.users.infrastructure.exception.IllegalUserAgeException;
+import com.pragma.users.domain.exception.IllegalUserAgeException;
 import com.pragma.users.infrastructure.exception.NoDataFoundException;
 import com.pragma.users.infrastructure.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
