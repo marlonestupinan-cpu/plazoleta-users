@@ -1,6 +1,6 @@
 package com.pragma.users.domain.model;
 
-import com.pragma.users.infrastructure.exception.IllegalUserAgeException;
+import com.pragma.users.domain.exception.IllegalUserAgeException;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -8,7 +8,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserTest {
 

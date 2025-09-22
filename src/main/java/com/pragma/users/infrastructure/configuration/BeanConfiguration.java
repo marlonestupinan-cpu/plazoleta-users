@@ -2,6 +2,8 @@ package com.pragma.users.infrastructure.configuration;
 
 import com.pragma.users.application.handler.ITokenGenerator;
 import com.pragma.users.application.handler.impl.auth.jwt.JwtGenerator;
+import com.pragma.users.domain.api.IPasswordEncoderPort;
+import com.pragma.users.domain.api.IRolePropiertiesPort;
 import com.pragma.users.domain.api.IRoleServicePort;
 import com.pragma.users.domain.api.IUserServicePort;
 import com.pragma.users.domain.api.auth.ITokenServicePort;
@@ -23,6 +25,8 @@ import com.pragma.users.infrastructure.out.jpa.repository.auth.ITokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +41,18 @@ public class BeanConfiguration {
     private final ITokenEntityMapper tokenEntityMapper;
 
     private final RoleProperties roleProperties;
+
+    private final @Lazy PasswordEncoder passwordEncoder;
+
+    @Bean
+    public IPasswordEncoderPort passwordEncoderPort() {
+        return passwordEncoder::encode;
+    }
+
+    @Bean
+    public IRolePropiertiesPort rolePropertiesPort() {
+        return roleProperties::getRoleName;
+    }
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
@@ -55,7 +71,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort(), roleServicePort(), roleProperties);
+        return new UserUseCase(userPersistencePort(), roleServicePort(), rolePropertiesPort(), passwordEncoderPort());
     }
 
     @Bean

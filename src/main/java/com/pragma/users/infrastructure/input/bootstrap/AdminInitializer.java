@@ -42,6 +42,7 @@ public class AdminInitializer implements CommandLineRunner {
 
             user.setName("Admin");
             user.setEmail(adminEmail);
+            user.setPhoneNumber("+123123123");
             user.setBirthDate(birthDate);
             user.setPassword(passwordEncoder.encode(adminPassword));
             user.setRole(adminRole);
